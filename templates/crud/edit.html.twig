@@ -1,0 +1,29 @@
+{% extends 'crud/base.html.twig' %}
+
+{% block title %}Edit {{ name }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>&nbsp;</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Edit {{ name }}</h1>
+
+                {{ include('Crud/_form.html.twig', {'button_label': 'Update'}) }}
+
+                <a class="btn btn-outline-primary" href="{{ path(indexRoute) }}">back to list</a>
+
+                {{ include('Crud/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+    <script>
+        if (window['updateForms']) {
+            updateForms();
+        }
+    </script>
+{% endblock %}

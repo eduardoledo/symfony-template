@@ -1,0 +1,49 @@
+{% extends 'crud/base.html.twig' %}
+
+{% block title %}{{ name }} index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>&nbsp;</h1>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h1>{{ name }} index</h1>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary" href="{{ path(newRoute) }}">Create new</a>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for fieldName in fields %}
+                        <th>{{ fieldName }}</th>
+                    {% endfor %}
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        {% for field in fields|keys() %}
+                            <td>{{ attribute(item, field) }}</td>
+                        {% endfor %}
+                        <td>
+                            <a class="btn btn-outline-primary" href="{{ path(editRoute, {'id': item.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

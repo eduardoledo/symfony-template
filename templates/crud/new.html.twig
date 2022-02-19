@@ -1,0 +1,26 @@
+{% extends 'crud/base.html.twig' %}
+
+{% block title %}New {{ name }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>&nbsp;</h1>
+            </div>
+        </div>
+        <div class="row">
+
+            <h1>Create new {{ name }}</h1>
+
+            {{ include('Crud/_form.html.twig') }}
+
+            <a class="btn btn-outline-primary" href="{{ path(indexRoute) }}">back to list</a>
+        </div>
+    </div>
+    <script>
+        if (window['updateForms']) {
+            updateForms();
+        }
+    </script>
+{% endblock %}
