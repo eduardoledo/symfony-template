@@ -3,6 +3,7 @@
 namespace App\Controller\Crud;
 
 use App\Entity\User;
+use App\Form\RegistrationFormType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,12 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends BaseCrudController implements EventSubscriberInterface
 {
     protected string $entity = User::class;
-//    protected string $type = CategoriaType::class;
+    protected string $type = RegistrationFormType::class;
     protected array $indexFields = [
         'id' => 'Id',
-        'name' => 'Nombre',
+        'email' => 'email',
     ];
     protected array $orderByFields = [
-        'name' => 'asc'
+        'email' => 'asc'
     ];
 }

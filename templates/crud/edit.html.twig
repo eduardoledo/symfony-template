@@ -13,11 +13,11 @@
             <div class="col">
                 <h1>Edit {{ name }}</h1>
 
-                {{ include('Crud/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('crud/_form.html.twig', {'button_label': 'Update'}) }}
 
                 <a class="btn btn-outline-primary" href="{{ path(indexRoute) }}">back to list</a>
 
-                {{ include('Crud/_delete_form.html.twig') }}
+                {{ include('crud/_delete_form.html.twig') }}
             </div>
         </div>
     </div>
