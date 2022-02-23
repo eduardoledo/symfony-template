@@ -28,14 +28,11 @@
                     <input type="password" name="password" id="inputPassword" class="form-control"
                            autocomplete="current-password"
                            required>
-
+                    <a href="{{ path('app_forgot_password_request') }}">Reset password</a>
                 </div>
-                {# <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div> #}
                 <button type="submit" class="btn btn-primary">Sign In</button>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <a href="{{ path('app_register') }}">Register</a>
 
                 {#
                 Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
