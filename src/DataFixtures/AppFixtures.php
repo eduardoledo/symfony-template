@@ -7,6 +7,7 @@ use App\Entity\SecurityRole;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -31,7 +32,11 @@ class AppFixtures extends Fixture
         $role_user = (new SecurityRole())
             ->setName('User')
             ->setRole('ROLE_USER');
-        $manager->persist($role_user);
+        //$manager->persist($role_user);
+
+        /** @var NestedTreeRepository $repo */
+        $repo = $manager->getRepository(SecurityRole::class);
+        $repo->persistAsFirstChildOf($role_user, $role_admin);
 
         $groupAdmin = (new SecurityGroup())
             ->setName('Admins')

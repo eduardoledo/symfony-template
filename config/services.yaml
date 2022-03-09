@@ -24,3 +24,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    security.role_hierarchy:
+        class: App\Security\RoleHierarchy
+        arguments:
+            $hierarchy: '%security.role_hierarchy.roles%'
