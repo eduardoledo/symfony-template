@@ -13,6 +13,7 @@ class UserController extends BaseCrudController implements EventSubscriberInterf
 {
     protected string $entity = User::class;
     protected string $type = RegistrationFormType::class;
+    protected ?string $title = "Users";
     protected array $indexFields = [
         'id' => 'Id',
         'email' => 'email',

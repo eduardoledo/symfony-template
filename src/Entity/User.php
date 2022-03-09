@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,11 +30,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = ['ROLE_USER'];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -47,6 +44,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToOne(targetEntity=UserProfile::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $profile;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=SecurityRole::class, inversedBy="users")
+     */
+    private $securityRoles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=SecurityGroup::class, inversedBy="users")
+     */
+    private $securityGroups;
+
+    public function __construct()
+    {
+        $this->securityRoles = new ArrayCollection();
+        $this->securityGroups = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,18 +106,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = ['ROLE_USER'];
+
+        /** @var SecurityRole $securityRole */
+        foreach ($this->getSecurityRoles() as $securityRole) {
+            $roles[] = $securityRole->getRole();
+        }
+
+        foreach ($this->getSecurityGroups() as $securityGroup) {
+            foreach ($securityGroup->getRoles() as $role) {
+                $roles[] = $role->getRole();
+            }
+        }
 
         return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -172,6 +187,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SecurityRole[]
+     */
+    public function getSecurityRoles(): Collection
+    {
+        return $this->securityRoles;
+    }
+
+    public function addSecurityRole(SecurityRole $securityRole): self
+    {
+        if (!$this->securityRoles->contains($securityRole)) {
+            $this->securityRoles[] = $securityRole;
+        }
+
+        return $this;
+    }
+
+    public function removeSecurityRole(SecurityRole $securityRole): self
+    {
+        $this->securityRoles->removeElement($securityRole);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SecurityGroup[]
+     */
+    public function getSecurityGroups(): Collection
+    {
+        return $this->securityGroups;
+    }
+
+    public function addSecurityGroup(SecurityGroup $securityGroup): self
+    {
+        if (!$this->securityGroups->contains($securityGroup)) {
+            $this->securityGroups[] = $securityGroup;
+        }
+
+        return $this;
+    }
+
+    public function removeSecurityGroup(SecurityGroup $securityGroup): self
+    {
+        $this->securityGroups->removeElement($securityGroup);
 
         return $this;
     }

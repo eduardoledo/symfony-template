@@ -6,12 +6,18 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AdminSidebarEvent extends Event
 {
-    private $classes = [];
+    private array $classes = [];
 
-    public function addClass(string $classname)
+    public function addClass(string $classname, string $title = null, $priority = 0)
     {
         if (!in_array($classname, $this->classes)) {
-            $this->classes[] = $classname;
+            $item = [
+                'title' => $title ?? $classname,
+                'className' => $classname,
+                'priority' => $priority
+            ];
+
+            $this->classes[] = $item;
         }
     }
 

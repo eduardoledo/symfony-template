@@ -19,6 +19,7 @@ abstract class BaseCrudController extends AbstractController
 
     protected string $entity;
     protected string $type;
+    protected ?string $title = null;
     protected array $indexFields = [
         'id' => 'Id',
     ];
@@ -44,7 +45,7 @@ abstract class BaseCrudController extends AbstractController
                 'items' => $items,
                 'newRoute' => $this->getNewRoute(),
                 'editRoute' => $this->getEditRoute(),
-                'name' => $this->getEntityName(),
+                'name' => $this->title ?? $this->getEntityName(),
                 'fields' => $this->indexFields,
             ]);
         }
@@ -90,7 +91,7 @@ abstract class BaseCrudController extends AbstractController
             'item' => $item,
             'form' => $form,
             'indexRoute' => $this->getIndexRoute(),
-            'name' => $this->getEntityName(),
+            'name' => $this->title ?? $this->getEntityName(),
         ]);
     }
 
@@ -122,7 +123,7 @@ abstract class BaseCrudController extends AbstractController
             'form' => $form,
             'indexRoute' => $this->getIndexRoute(),
             'deleteRoute' => $this->getDeleteRoute(),
-            'name' => $this->getEntityName(),
+            'name' => $this->title ?? $this->getEntityName(),
         ]);
     }
 
@@ -146,6 +147,6 @@ abstract class BaseCrudController extends AbstractController
 
     public function registerInSidebar(AdminSidebarEvent $event)
     {
-        $event->addClass($this->entity);
+        $event->addClass($this->entity, $this->title ?? $this->getEntityName());
     }
 }

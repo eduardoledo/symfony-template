@@ -21,15 +21,21 @@ class MainCrudController extends AbstractController
         /** @var AdminSidebarEvent $event */
         $event = $eventDispatcher->dispatch(new AdminSidebarEvent());
 
-        $items = [];
+        $items = array_map(function ($item) {
+            $name = str_replace('App\\Entity\\', '', $item['className']);
+            $item['route'] = strtolower("app_crud_{$name}_index");
+            if ($item['title'] == $item['className']) {
+                $item['title'] = $name;
+            }
+            return $item;
+        }, $event->getClasses());
 
-        foreach ($event->getClasses() as $class) {
-            $name = str_replace('App\\Entity\\', '', $class);
-            $items[] = [
-                'title' => $name,
-                'route' => strtolower("app_crud_{$name}_index"),
-            ];
-        }
+        usort($items, function ($a, $b) {
+            if ($a['priority'] == $b['priority']) {
+                return 0;
+            }
+            return ($a < $b) ? -1 : 1;
+        });
 
         return $this->render('crud/_entities.html.twig', [
             'items' => $items

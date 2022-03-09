@@ -49,7 +49,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath && $targetPath != $this->urlGenerator->generate(self::LOGIN_ROUTE)) {
             return new RedirectResponse($targetPath);
         }
-        return new RedirectResponse($this->urlGenerator->generate('app_maincrud_index'));
+        return new RedirectResponse($this->urlGenerator->generate('app_crud_maincrud_index'));
     }
 
     protected function getLoginUrl(Request $request): string
